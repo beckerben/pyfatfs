@@ -44,7 +44,11 @@ class DosDateTime(datetime):
     @staticmethod
     def deserialize_time(tm: int) -> time:
         """Convert a DOS time format to a Python object."""
-        second = (tm & (1 << 5) - 1) * 2
-        minute = (tm >> 5) & ((1 << 6) - 1)
-        hour = (tm >> 11) & ((1 << 5) - 1)
-        return time(hour, minute, second)
+        try:
+            second = (tm & (1 << 5) - 1) * 2
+            minute = (tm >> 5) & ((1 << 6) - 1)
+            hour = (tm >> 11) & ((1 << 5) - 1)
+            calc_time = time(hour, minute, second)
+            return calc_time
+        except Exception:
+            return time(hour, minute, 59)
